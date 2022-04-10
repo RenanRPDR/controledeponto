@@ -21,6 +21,10 @@ public class Batida {
 	@JsonInclude(Include.NON_NULL)
 	private LocalDateTime dataHora;
 
+	public Batida () {
+		super();
+	}
+	
 	public Batida(LocalDateTime dataHora) {
 		this.dataHora = dataHora;
 	}
