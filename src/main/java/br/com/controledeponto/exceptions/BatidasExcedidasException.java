@@ -5,14 +5,11 @@ public class BatidasExcedidasException extends RuntimeException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6805686960428294903L;
-	
-	public BatidasExcedidasException(String mensagem) {
-		super(mensagem);
+	private static final long serialVersionUID = 1L;
+
+	public BatidasExcedidasException() {
+		super();
 	}
 
-	public BatidasExcedidasException(String mensagem, Throwable causa) {
-		super(mensagem, causa);
-	}
 
 }

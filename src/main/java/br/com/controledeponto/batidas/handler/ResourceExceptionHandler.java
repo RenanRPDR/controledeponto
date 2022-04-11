@@ -34,13 +34,13 @@ public class ResourceExceptionHandler {
 			HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Apenas 4 horários podem ser registrados por dia");
 	}
-
+	// JA FOI
 	@ExceptionHandler(TempoMinimoDeAlmocoException.class)
 	public ResponseEntity<String> handleTempoMinDeAlmocoException(TempoMinimoDeAlmocoException e,
 			HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Deve haver no mínimo 1 hora de almoço");
 	}
-
+	// JA FOI
 	@ExceptionHandler(FinalDeSemanaException.class)
 	public ResponseEntity<String> handleFinalDeSemanaException(FinalDeSemanaException e, HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Sábado e domingo não são permitidos como dia de trabalho");

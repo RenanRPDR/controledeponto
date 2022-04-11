@@ -3,20 +3,17 @@ package br.com.controledeponto.batidas;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.controledeponto.exceptions.BatidaRepetidaException;
+import br.com.controledeponto.exceptions.BatidasExcedidasException;
 import br.com.controledeponto.exceptions.CampoNaoInformadoException;
 import br.com.controledeponto.exceptions.FinalDeSemanaException;
 import br.com.controledeponto.exceptions.TempoMinimoDeAlmocoException;
-import ch.qos.logback.core.util.Duration;
 
 @Service
 public class BatidaService {
@@ -74,9 +71,12 @@ public class BatidaService {
 			int horaBatidaAnterior = batidaRegistrada.getDataHora().toLocalTime().getHour();
 			int horaBatidaAtual = batidaDataHora.toLocalTime().getHour();
 
-			if ((diaBatidaAnterior.compareTo(diaBatidaAtual) == 0) && (batidasRegistradas.size() == 2)) {
-				if (horaBatidaAtual - horaBatidaAnterior < 1) {
+			if ((diaBatidaAnterior.compareTo(diaBatidaAtual) == 0) ) {
+				if ((batidasRegistradas.size() == 2) && (horaBatidaAtual - horaBatidaAnterior < 1)) {
 					throw new TempoMinimoDeAlmocoException();
+				}
+				if(batidasRegistradas.size() >= 4) {
+					throw new BatidasExcedidasException();
 				}
 			}
 
