@@ -1,4 +1,4 @@
-package br.com.controledeponto.batidas.handler;
+package br.com.controledeponto.handler;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import br.com.controledeponto.exceptions.BatidaRepetidaException;
-import br.com.controledeponto.exceptions.BatidasExcedidasException;
-import br.com.controledeponto.exceptions.CampoNaoInformadoException;
-import br.com.controledeponto.exceptions.FinalDeSemanaException;
-import br.com.controledeponto.exceptions.FormatoDeDataInvalidoException;
-import br.com.controledeponto.exceptions.TempoMinimoDeAlmocoException;
+import br.com.controledeponto.batidas.exceptions.BatidaRepetidaException;
+import br.com.controledeponto.batidas.exceptions.BatidasExcedidasException;
+import br.com.controledeponto.batidas.exceptions.CampoNaoInformadoException;
+import br.com.controledeponto.batidas.exceptions.FinalDeSemanaException;
+import br.com.controledeponto.batidas.exceptions.FormatoDeDataInvalidoException;
+import br.com.controledeponto.batidas.exceptions.TempoMinimoDeAlmocoException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {

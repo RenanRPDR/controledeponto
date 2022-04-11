@@ -1,4 +1,4 @@
-package br.com.controledeponto.exceptions;
+package br.com.controledeponto.batidas.exceptions;
 
 public class BatidaRepetidaException extends RuntimeException {
 
