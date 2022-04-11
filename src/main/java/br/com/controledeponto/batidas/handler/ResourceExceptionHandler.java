@@ -17,16 +17,16 @@ import br.com.controledeponto.exceptions.TempoMinimoDeAlmocoException;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-	@ExceptionHandler(CampoNaoInformadoException.class)
-	public ResponseEntity<String> handleCampoNaoInformadoException(CampoNaoInformadoException e,
-			HttpServletRequest request) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campo obrigatório não informado");
-	}
-
 	@ExceptionHandler(FormatoDeDataInvalidoException.class)
 	public ResponseEntity<String> handleFormatoDeDataInvalidoException(FormatoDeDataInvalidoException e,
 			HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Data e hora em formato inválido");
+	}
+	// JA FOI
+	@ExceptionHandler(CampoNaoInformadoException.class)
+	public ResponseEntity<String> handleCampoNaoInformadoException(CampoNaoInformadoException e,
+			HttpServletRequest request) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campo obrigatório não informado");
 	}
 
 	@ExceptionHandler(BatidasExcedidasException.class)
@@ -45,7 +45,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<String> handleFinalDeSemanaException(FinalDeSemanaException e, HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Sábado e domingo não são permitidos como dia de trabalho");
 	}
-	
+	// JA FOI
 	@ExceptionHandler(BatidaRepetidaException.class)
 	public ResponseEntity<String> handleBatidaRepetidaException(BatidaRepetidaException e, HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body("Horários já registrado");

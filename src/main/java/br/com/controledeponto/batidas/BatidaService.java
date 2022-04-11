@@ -1,15 +1,22 @@
 package br.com.controledeponto.batidas;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.controledeponto.exceptions.BatidaRepetidaException;
 import br.com.controledeponto.exceptions.CampoNaoInformadoException;
 import br.com.controledeponto.exceptions.FinalDeSemanaException;
+import br.com.controledeponto.exceptions.TempoMinimoDeAlmocoException;
+import ch.qos.logback.core.util.Duration;
 
 @Service
 public class BatidaService {
@@ -26,35 +33,53 @@ public class BatidaService {
 		Batida batida = converterHora(batidaDTO);
 		LocalDateTime batidaDataHora = batida.getDataHora();
 		DayOfWeek diaDaSemana = batidaDataHora.getDayOfWeek();
-		
+
 		if ((diaDaSemana == DayOfWeek.SATURDAY) || (diaDaSemana == DayOfWeek.SUNDAY)) {
 			throw new FinalDeSemanaException();
 		}
 
-		
-//		if (batidaDataHora == ) {
-//		throw new BatidaRepetidaException("Horários já registrado.");
-//	}
-		
-//		if (batidaDataHora >= 60) {
-//			
-//		}
+		List<Batida> batidasRegistradas = listar();
+
+		for (Batida batidaRegistrada : batidasRegistradas) {
+
+			if (batidaRegistrada.getDataHora().compareTo(batidaDataHora) == 0) {
+				throw new BatidaRepetidaException("Horários já registrado.");
+			}
+		}
+		validarIntervaloAlmoco(batidaDataHora, batidasRegistradas);
+
 		return batidaRepository.save(batida);
 	}
 
 	public List<Batida> listar() {
-		
+
 		return batidaRepository.findAll();
 	}
 
 	private Batida converterHora(BatidaDTO batidaDTO) {
+
 		LocalDateTime dataHoraConvertida = LocalDateTime.parse(batidaDTO.getDataHora(),
 				DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 		Batida batida = new Batida(dataHoraConvertida);
 		return batida;
 	}
-	
-//	private Batida consultarUltimaBatida(BatidaDTO batidaDTO) {
-//		
-//	}
+
+	private void validarIntervaloAlmoco(LocalDateTime batidaDataHora, List<Batida> batidasRegistradas) {
+
+		for (Batida batidaRegistrada : batidasRegistradas) {
+
+			LocalDate diaBatidaAnterior = batidaRegistrada.getDataHora().toLocalDate();
+			LocalDate diaBatidaAtual = batidaDataHora.toLocalDate();
+
+			int horaBatidaAnterior = batidaRegistrada.getDataHora().toLocalTime().getHour();
+			int horaBatidaAtual = batidaDataHora.toLocalTime().getHour();
+
+			if ((diaBatidaAnterior.compareTo(diaBatidaAtual) == 0) && (batidasRegistradas.size() == 2)) {
+				if (horaBatidaAtual - horaBatidaAnterior < 1) {
+					throw new TempoMinimoDeAlmocoException();
+				}
+			}
+
+		}
+	}
 }
