@@ -5,13 +5,9 @@ public class BatidaRepetidaException extends RuntimeException {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4763773862016110491L;
+	private static final long serialVersionUID = 1L;
 
-	public BatidaRepetidaException(String mensagem) {
-		super(mensagem);
-	}
-
-	public BatidaRepetidaException(String mensagem, Throwable causa) {
-		super(mensagem, causa);
+	public BatidaRepetidaException() {
+		super();
 	}
 }

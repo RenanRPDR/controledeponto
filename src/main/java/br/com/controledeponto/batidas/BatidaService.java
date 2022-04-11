@@ -42,7 +42,7 @@ public class BatidaService {
 		for (Batida batidaRegistrada : batidasRegistradas) {
 
 			if (batidaRegistrada.getDataHora().compareTo(batidaDataHora) == 0) {
-				throw new BatidaRepetidaException("Horários já registrado.");
+				throw new BatidaRepetidaException();
 			}
 		}
 		validarIntervaloAlmoco(batidaDataHora, batidasRegistradas);
