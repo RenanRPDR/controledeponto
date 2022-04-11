@@ -1,5 +1,6 @@
 package br.com.controledeponto.batidas;
 
+import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import br.com.controledeponto.exceptions.BatidaRepetidaException;
 import br.com.controledeponto.exceptions.BatidasExcedidasException;
 import br.com.controledeponto.exceptions.CampoNaoInformadoException;
 import br.com.controledeponto.exceptions.FinalDeSemanaException;
+import br.com.controledeponto.exceptions.FormatoDeDataInvalidoException;
 import br.com.controledeponto.exceptions.TempoMinimoDeAlmocoException;
 
 @Service
@@ -55,10 +57,14 @@ public class BatidaService {
 
 	private Batida converterHora(BatidaDTO batidaDTO) {
 
-		LocalDateTime dataHoraConvertida = LocalDateTime.parse(batidaDTO.getDataHora(),
-				DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-		Batida batida = new Batida(dataHoraConvertida);
-		return batida;
+		try {
+			LocalDateTime dataHoraConvertida = LocalDateTime.parse(batidaDTO.getDataHora(),
+					DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			Batida batida = new Batida(dataHoraConvertida);
+			return batida;
+		} catch (DateTimeException e) {
+			throw new FormatoDeDataInvalidoException();
+		}
 	}
 
 	private void validarIntervaloAlmoco(LocalDateTime batidaDataHora, List<Batida> batidasRegistradas) {
@@ -71,11 +77,11 @@ public class BatidaService {
 			int horaBatidaAnterior = batidaRegistrada.getDataHora().toLocalTime().getHour();
 			int horaBatidaAtual = batidaDataHora.toLocalTime().getHour();
 
-			if ((diaBatidaAnterior.compareTo(diaBatidaAtual) == 0) ) {
+			if ((diaBatidaAnterior.compareTo(diaBatidaAtual) == 0)) {
 				if ((batidasRegistradas.size() == 2) && (horaBatidaAtual - horaBatidaAnterior < 1)) {
 					throw new TempoMinimoDeAlmocoException();
 				}
-				if(batidasRegistradas.size() >= 4) {
+				if (batidasRegistradas.size() >= 4) {
 					throw new BatidasExcedidasException();
 				}
 			}

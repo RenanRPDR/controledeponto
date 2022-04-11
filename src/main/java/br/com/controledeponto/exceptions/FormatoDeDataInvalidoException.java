@@ -1,16 +1,14 @@
 package br.com.controledeponto.exceptions;
 
 public class FormatoDeDataInvalidoException extends RuntimeException {
-	/**
+		/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7589939445333967855L;
+		private static final long serialVersionUID = 1L;
 
-	public FormatoDeDataInvalidoException(String mensagem) {
-		super(mensagem);
+	public FormatoDeDataInvalidoException() {
+		super();
 	}
 
-	public FormatoDeDataInvalidoException(String mensagem, Throwable causa) {
-		super(mensagem, causa);
-	}
+	
 }
