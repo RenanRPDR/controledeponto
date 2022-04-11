@@ -45,6 +45,7 @@ public class BatidaService {
 				throw new BatidaRepetidaException();
 			}
 		}
+
 		validarIntervaloAlmoco(batidaDataHora, batidasRegistradas);
 
 		return batidaRepository.save(batida);
