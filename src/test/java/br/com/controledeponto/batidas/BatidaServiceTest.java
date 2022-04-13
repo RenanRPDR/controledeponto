@@ -17,9 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.controledeponto.ControledepontoApplication;
 import br.com.controledeponto.batidas.exceptions.BatidaRepetidaException;
+import br.com.controledeponto.batidas.exceptions.BatidasExcedidasException;
 import br.com.controledeponto.batidas.exceptions.CampoNaoInformadoException;
 import br.com.controledeponto.batidas.exceptions.FinalDeSemanaException;
 import br.com.controledeponto.batidas.exceptions.FormatoDeDataInvalidoException;
+import br.com.controledeponto.batidas.exceptions.TempoMinimoDeAlmocoException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ControledepontoApplication.class)
@@ -84,21 +86,57 @@ public class BatidaServiceTest {
 		batidaService.salvar(batidaDTO);
 	}
 	
-//	@Test(expected = TempoMinimoDeAlmocoException.class)
-//	public void deveLancarExcecao_IntervaloAlmocoInvalido() throws Exception {
-//		BatidaDTO batidaDTO = new BatidaDTO();
-//		batidaDTO.setId(1L);
-//		batidaDTO.setDataHora("2022-04-08T08:00:00");
-//		batidaService.salvar(batidaDTO);
-//		
-//		BatidaDTO batidaDoisDTO = new BatidaDTO();
-//		batidaDoisDTO.setId(2L);
-//		batidaDoisDTO.setDataHora("2022-04-08T12:00:00");
-//		batidaService.salvar(batidaDoisDTO);
-//		
-//		BatidaDTO batidaTresDTO = new BatidaDTO();
-//		batidaTresDTO.setId(3L);
-//		batidaTresDTO.setDataHora("2022-04-08T12:37:00");
-//		batidaService.salvar(batidaTresDTO);
-//	}
+	@Test(expected = TempoMinimoDeAlmocoException.class)
+	public void deveLancarExcecao_IntervaloAlmocoInvalido() throws Exception {
+		Batida batida = new Batida();
+		batida.setId(1L);
+		batida.setDataHora(LocalDateTime.parse("2022-04-08T08:00:00"));		
+		
+		Batida batidaDois = new Batida();
+		batidaDois.setId(1L);
+		batidaDois.setDataHora(LocalDateTime.parse("2022-04-08T12:00:00"));	
+		
+		List<Batida> batidas = new ArrayList<>();
+		batidas.add(batida);
+		batidas.add(batidaDois);
+		
+		when(batidaService.listar()).thenReturn(batidas);
+		
+		BatidaDTO batidaTres = new BatidaDTO();
+		batidaTres.setId(2L);
+		batidaTres.setDataHora("2022-04-08T12:40:00");
+		batidaService.salvar(batidaTres);
+	}
+	
+	@Test(expected = BatidasExcedidasException.class)
+	public void deveLancarExcecao_BatidasExcedentes() throws Exception {
+		Batida batida = new Batida();
+		batida.setId(1L);
+		batida.setDataHora(LocalDateTime.parse("2022-04-08T08:00:00"));		
+		
+		Batida batidaDois = new Batida();
+		batidaDois.setId(1L);
+		batidaDois.setDataHora(LocalDateTime.parse("2022-04-08T12:00:00"));	
+		
+		Batida batidaTres = new Batida();
+		batidaTres.setId(1L);
+		batidaTres.setDataHora(LocalDateTime.parse("2022-04-08T13:30:00"));		
+		
+		Batida batidaQuatro = new Batida();
+		batidaQuatro.setId(1L);
+		batidaQuatro.setDataHora(LocalDateTime.parse("2022-04-08T17:30:00"));	
+		
+		List<Batida> batidas = new ArrayList<>();
+		batidas.add(batida);
+		batidas.add(batidaDois);
+		batidas.add(batidaTres);
+		batidas.add(batidaQuatro);
+		
+		when(batidaService.listar()).thenReturn(batidas);
+		
+		BatidaDTO batidaExcedente = new BatidaDTO();
+		batidaExcedente.setId(1L);
+		batidaExcedente.setDataHora("2022-04-08T18:30:00");
+		batidaService.salvar(batidaExcedente);
+	}
 }
