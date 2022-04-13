@@ -29,7 +29,7 @@ public class BatidaService {
 			throw new CampoNaoInformadoException();
 		}
 
-		Batida batida = converterHora(batidaDTO);
+		Batida batida = converterBatida(batidaDTO);
 		LocalDateTime batidaDataHora = batida.getDataHora();
 		DayOfWeek diaDaSemana = batidaDataHora.getDayOfWeek();
 
@@ -55,7 +55,7 @@ public class BatidaService {
 		return batidaRepository.findAll();
 	}
 
-	private Batida converterHora(BatidaDTO batidaDTO) {
+	private Batida converterBatida(BatidaDTO batidaDTO) {
 
 		try {
 			LocalDateTime dataHoraConvertida = LocalDateTime.parse(batidaDTO.getDataHora(),

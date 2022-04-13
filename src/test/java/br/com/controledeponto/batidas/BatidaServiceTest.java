@@ -4,6 +4,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -65,14 +69,36 @@ public class BatidaServiceTest {
 	
 	@Test(expected = BatidaRepetidaException.class)
 	public void deveLancarExcecao_BatidaRepetida() throws Exception {
+		Batida batida = new Batida();
+		batida.setId(1L);
+		batida.setDataHora(LocalDateTime.parse("2022-04-08T08:00:00"));		
+		
+		List<Batida> batidas = new ArrayList<>();
+		batidas.add(batida);
+		
+		when(batidaService.listar()).thenReturn(batidas);
+		
 		BatidaDTO batidaDTO = new BatidaDTO();
-		batidaDTO.setId(1L);
+		batidaDTO.setId(2L);
 		batidaDTO.setDataHora("2022-04-08T08:00:00");
 		batidaService.salvar(batidaDTO);
-		
-		BatidaDTO batidaDoisDTO = new BatidaDTO();
-		batidaDoisDTO.setId(1L);
-		batidaDoisDTO.setDataHora("2022-04-08T08:00:00");
-		batidaService.salvar(batidaDoisDTO);
 	}
+	
+//	@Test(expected = TempoMinimoDeAlmocoException.class)
+//	public void deveLancarExcecao_IntervaloAlmocoInvalido() throws Exception {
+//		BatidaDTO batidaDTO = new BatidaDTO();
+//		batidaDTO.setId(1L);
+//		batidaDTO.setDataHora("2022-04-08T08:00:00");
+//		batidaService.salvar(batidaDTO);
+//		
+//		BatidaDTO batidaDoisDTO = new BatidaDTO();
+//		batidaDoisDTO.setId(2L);
+//		batidaDoisDTO.setDataHora("2022-04-08T12:00:00");
+//		batidaService.salvar(batidaDoisDTO);
+//		
+//		BatidaDTO batidaTresDTO = new BatidaDTO();
+//		batidaTresDTO.setId(3L);
+//		batidaTresDTO.setDataHora("2022-04-08T12:37:00");
+//		batidaService.salvar(batidaTresDTO);
+//	}
 }
