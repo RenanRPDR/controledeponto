@@ -40,7 +40,6 @@ public class BatidaService {
 		List<Batida> batidasRegistradas = listar();
 
 		for (Batida batidaRegistrada : batidasRegistradas) {
-
 			if (batidaRegistrada.getDataHora().compareTo(batidaDataHora) == 0) {
 				throw new BatidaRepetidaException();
 			}
