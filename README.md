@@ -39,3 +39,6 @@
   - Após levantar sua aplicação o H2 Database estará disponível na URL: http://localhost:8080/h2-console
   - As configurações do banco podem ser consultadas no arquivo "application.properties"
   - Caminho do arquivo: src/main/resources/application.properties
+
+ ### Requests
+ - https://www.postman.com/avionics-cosmonaut-40833514/workspace/spring-books/request/18240131-2971d487-1c29-403a-bcf5-e9ff273730b2
